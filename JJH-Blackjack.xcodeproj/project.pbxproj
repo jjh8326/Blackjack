@@ -11,6 +11,7 @@
 		D8700EA52C8E312500C0E769 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8700EA42C8E312500C0E769 /* ContentView.swift */; };
 		D8700EA72C8E312800C0E769 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8700EA62C8E312800C0E769 /* Assets.xcassets */; };
 		D8700EAA2C8E312800C0E769 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8700EA92C8E312800C0E769 /* Preview Assets.xcassets */; };
+		D8700EB12C8E387C00C0E769 /* CardDeck.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8700EB02C8E387C00C0E769 /* CardDeck.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +20,7 @@
 		D8700EA42C8E312500C0E769 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		D8700EA62C8E312800C0E769 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D8700EA92C8E312800C0E769 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		D8700EB02C8E387C00C0E769 /* CardDeck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDeck.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +55,7 @@
 			children = (
 				D8700EA22C8E312500C0E769 /* JJH_BlackjackApp.swift */,
 				D8700EA42C8E312500C0E769 /* ContentView.swift */,
+				D8700EB02C8E387C00C0E769 /* CardDeck.swift */,
 				D8700EA62C8E312800C0E769 /* Assets.xcassets */,
 				D8700EA82C8E312800C0E769 /* Preview Content */,
 			);
@@ -137,6 +140,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D8700EB12C8E387C00C0E769 /* CardDeck.swift in Sources */,
 				D8700EA52C8E312500C0E769 /* ContentView.swift in Sources */,
 				D8700EA32C8E312500C0E769 /* JJH_BlackjackApp.swift in Sources */,
 			);

@@ -7,7 +7,14 @@
 
 import SwiftUI
 
+//TODO: Get images
+//♠️ ♦️ ♥️ ♣️
+
 struct ContentView: View {
+    
+    @State private var deck = CardDeck()
+    @State private var drawnCards = [PlayingCard]()
+    
     var body: some View {
         VStack {
             //Title
@@ -24,10 +31,10 @@ struct ContentView: View {
                         .padding(.bottom, 10)
                     HStack {
                         //Card 1
-                        Text("C1")
+                        Text("A♥️")
                             .padding(.trailing, 10)
                         //Card 2
-                        Text("C2")
+                        Text("2♣️")
                     }
                 }
                 Spacer()
@@ -37,10 +44,10 @@ struct ContentView: View {
                         .padding(.bottom, 10)
                     HStack {
                         //Card 1
-                        Text("C1")
+                        Text("5♠️")
                             .padding(.trailing, 10)
                         //Card 2
-                        Text("C2")
+                        Text("Q♦️")
                     }
                 }
                 Spacer()
@@ -49,30 +56,18 @@ struct ContentView: View {
             //Draw cards & buttons
             HStack {
                 HStack {
-                    //Draw cards
-                    Text("H1")
-                        .padding(.trailing, 10)
-                    Text("H2")
-                        .padding(.trailing, 10)
-                    Text("H3")
-                        .padding(.trailing, 10)
-                    Text("H4")
-                        .padding(.trailing, 10)
-                    Text("H5")
-                        .padding(.trailing, 10)
-                    Text("H6")
-                        .padding(.trailing, 10)
-                    Text("H7")
-                        .padding(.trailing, 10)
-                    Text("H8")
-                        .padding(.trailing, 10)
-                    Text("H9")
+                    //Drawn cards (1 up to 9)
+                    ForEach(drawnCards, id: \.self) { card in
+                        Text(card.cardName())
+                    }
                 }
                 Spacer()
                 HStack {
                     VStack {
                         Button("Hit") {
-                            //
+                            if let card = deck.drawCard() {
+                                drawnCards.append(card)
+                            }
                         }.padding(.bottom, 10)
                         Button("Stay") {
                             //
