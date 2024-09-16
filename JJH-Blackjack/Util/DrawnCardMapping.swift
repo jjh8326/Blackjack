@@ -13,7 +13,7 @@ class DrawnCardMapping: Identifiable, Hashable {
         return true //lhs.hashValue > rhs.hashValue
     }
     
-    //TODO: Why not show up...?
+    //TODO: Why not show up when auto adding protocol stubs...?
     func hash(into hasher: inout Hasher) {
         hasher.combine(isPlayerCard)
         hasher.combine(card)

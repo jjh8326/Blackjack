@@ -12,8 +12,7 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @State private var deck = CardDeck()
-    @State private var drawnCards = [PlayingCard]()
+    @ObservedObject private var gameManager = GameManager()
     
     var body: some View {
         VStack {
@@ -30,11 +29,9 @@ struct ContentView: View {
                     Text("Player")
                         .padding(.bottom, 10)
                     HStack {
-                        //Card 1
-                        Text("A♥️")
-                            .padding(.trailing, 10)
-                        //Card 2
-                        Text("2♣️")
+                        let playerCards = gameManager.playerStartingCards()
+                        Text(playerCards[0].cardName())
+                        Text(playerCards[1].cardName())
                     }
                 }
                 Spacer()
@@ -43,11 +40,9 @@ struct ContentView: View {
                     Text("CPU")
                         .padding(.bottom, 10)
                     HStack {
-                        //Card 1
-                        Text("5♠️")
-                            .padding(.trailing, 10)
-                        //Card 2
-                        Text("Q♦️")
+                        let cpuCards = gameManager.cpuStartingCards()
+                        Text(cpuCards[0].cardName())
+                        Text(cpuCards[1].cardName())
                     }
                 }
                 Spacer()
@@ -57,20 +52,22 @@ struct ContentView: View {
             HStack {
                 HStack {
                     //Drawn cards (1 up to 9)
-                    ForEach(drawnCards, id: \.self) { card in
+                    ForEach(gameManager.hitCards, id: \.self) { card in
                         Text(card.cardName())
                     }
                 }
                 Spacer()
                 HStack {
                     VStack {
+                        Button("Reset") {
+                            gameManager.resetGame()
+                        }.padding(.bottom, 10)
                         Button("Hit") {
-                            if let card = deck.drawCard() {
-                                drawnCards.append(card)
-                            }
+                            //Update the hit cards
+                            gameManager.hitPressed()
                         }.padding(.bottom, 10)
                         Button("Stay") {
-                            //
+                            gameManager.stayPressed()
                         }
                     }
                 }
