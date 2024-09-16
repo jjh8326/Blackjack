@@ -22,10 +22,10 @@ enum CardValue: Int, CaseIterable {
 
 struct PlayingCard: Hashable {
     
-    var cardValue: CardValue
-    var cardSuit: CardSuit
+    var cardValue: CardValue?
+    var cardSuit: CardSuit?
     
-    init(value: CardValue, suit: CardSuit) {
+    init(value: CardValue?, suit: CardSuit?) {
         self.cardValue = value
         self.cardSuit = suit
     }
@@ -59,6 +59,8 @@ struct PlayingCard: Hashable {
             cardValueString =  "K"
         case .ace:
             cardValueString = "A"
+        case .none:
+            cardValueString = ""
         }
         
         var cardSuitEmoji = ""
@@ -71,6 +73,8 @@ struct PlayingCard: Hashable {
             cardSuitEmoji = "♦️"
         case .spades:
             cardSuitEmoji = "♠️"
+        case .none:
+            cardSuitEmoji = ""
         }
         
         return ("\(cardValueString)\(cardSuitEmoji)")
@@ -81,10 +85,12 @@ class CardDeck {
     
     var cardsRemaining: Int
     var deck: [PlayingCard]
+    var drawnCardsMapping: [DrawnCardMapping]
     
     init() {
         cardsRemaining = 52
         deck = []
+        drawnCardsMapping = []
         
         //Get the game ready
         createDeck()
@@ -115,22 +121,25 @@ class CardDeck {
         deck.shuffle()
     }
     
-    func drawCard() -> PlayingCard? {
+    func drawCard(isPlayerCard: Bool) {
         guard let cardDrawn = deck.popLast() else {
             print("No cards left in deck!")
-            return nil
+            return
         }
         
         if self.cardsRemaining >= 1 {
             self.cardsRemaining -= 1
+            
             print("You drew:")
             print(cardDrawn.cardName())
+            print("Cards remaining:")
             print(cardsRemaining)
-            return cardDrawn
+            
+            //Add card to mapping
+            drawnCardsMapping.append(DrawnCardMapping(isPlayerCard: isPlayerCard, card: cardDrawn))
         }
         else {
             print("No cards left in deck!")
-            return nil
         }
     }
 }
