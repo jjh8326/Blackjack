@@ -9,9 +9,14 @@ import Foundation
 
 class GameManager: ObservableObject {
     private var deck = CardDeck()
-    //Make it available for the view to consume
-    @Published var hitCards = [PlayingCard]()
     
+    //Make these available for the view to consume
+    @Published var hitCards = [PlayingCard]()
+    @Published var showScore = false
+
+    //TODO: May need to make object that holds score data
+    @Published var score = 0
+
     init() {
         beginGame()
     }
@@ -37,19 +42,17 @@ class GameManager: ObservableObject {
     
     func stayPressed() {
         calculatePlayerCards()
+        
         //beginCPUTurn()
     }
     
     func calculatePlayerCards() {
         //TODO: Determine if player bust
         //if calculateCardValue() < 21 { bust }
-        
-        //TODO: Move below into own method
-        
+
         var total = 0
         var aces = 0
         
-        //TODO: Move this logic
         for card in playerCards() {
             switch card.cardValue {
             case .two:
@@ -83,38 +86,59 @@ class GameManager: ObservableObject {
             }
         }
         
-        var tempTotal = total
+        //[Ace, Eight] fails here and calculates as 8
         
+        //TODO: This logic is meh...
         //Calculate if no need for ace swap
-        for _ in 1...aces {
-            tempTotal += 11
-        }
-        
-        if (tempTotal != 21) {
-            //TODO: Define!
-            //((Keep swapping, swappedTimes), (Total, Number of aces))
-            var swapCheck = ((false, 0),(tempTotal, aces))
+        if aces > 0 {
+            var tempTotal = total
             
-            while (swapCheck.0.0 == false) {
-                swapCheck = calculateForSwap(currentTotal: swapCheck.1.0, acesCount: swapCheck.1.1, swappedTimes: swapCheck.0.1)
+            for _ in 1...aces {
+                tempTotal += 11
             }
             
-            print("here")
+            if (tempTotal != 21) {
+                //TODO: Define!
+                //((Stop swapping, swappedTimes), (Total, Number of aces))
+                var swapCheck = ((false, 0),(tempTotal, aces))
+                
+                while (swapCheck.0.0 == false) {
+                    swapCheck = calculateForAceSwap(currentTotal: swapCheck.1.0, unswappedAcesCount: swapCheck.1.1, swappedTimes: swapCheck.0.1)
+                }
+                
+                score = swapCheck.1.0
+            } else {
+                score = tempTotal
+            }
+        } else {
+            score = total
         }
     }
     
-    func calculateForSwap(currentTotal: Int, acesCount: Int, swappedTimes: Int) -> ((Bool, Int), (Int, Int)) {
-        if (acesCount == swappedTimes) || (acesCount == 0) {
-            return ((true, swappedTimes), (currentTotal,acesCount))
+    func calculateForAceSwap(currentTotal: Int, unswappedAcesCount: Int, swappedTimes: Int) -> ((Bool, Int), (Int, Int)) {
+        if (unswappedAcesCount == swappedTimes) || (unswappedAcesCount == 0) {
+            return ((true, swappedTimes), (currentTotal,unswappedAcesCount))
         }
         
         //Swap one of the aces for a 1
         var newTotal = currentTotal - 11
         newTotal += 1
         
-       //TODO: NEED TO CALCUALTE WHEN TO STOP SWAPPING ACES
+        if (currentTotal < 21 && newTotal < currentTotal) {
+            //Don't swap
+            return ((true, swappedTimes - 1), (currentTotal,unswappedAcesCount - 1))
+        }
         
-        return ((false, swappedTimes + 1), (currentTotal,acesCount - 1))
+//        if (newTotal <= 21 && currentTotal <= 21 && newTotal < currentTotal) {
+//            return ((true, swappedTimes - 1), (currentTotal,unswappedAcesCount - 1))
+//        }
+        
+//       //TODO: NEED TO CALCULATE WHEN TO STOP SWAPPING ACES (is this correct?)
+//        if (newTotal <= 21) {
+//            return ((true, swappedTimes + 1), (newTotal,unswappedAcesCount - 1))
+//        } else
+        
+        return ((false, swappedTimes + 1), (newTotal,unswappedAcesCount - 1))
     }
     
     func playerCards() -> [PlayingCard] {

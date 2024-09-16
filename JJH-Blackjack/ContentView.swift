@@ -13,6 +13,7 @@ import SwiftUI
 struct ContentView: View {
     
     @ObservedObject private var gameManager = GameManager()
+    @State private var showScore = false
     
     var body: some View {
         VStack {
@@ -68,11 +69,19 @@ struct ContentView: View {
                         }.padding(.bottom, 10)
                         Button("Stay") {
                             gameManager.stayPressed()
+                            showScore = true
                         }
                     }
                 }
             }
-        }.padding(.top, 10)
+        }
+        .padding(.top, 10)
+        .alert(isPresented: $showScore) {
+            Alert(
+                title: Text("Score"),
+                message: Text(String(gameManager.score))
+            )
+        }
     }
 }
 
