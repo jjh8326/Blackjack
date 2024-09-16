@@ -13,9 +13,16 @@ class GameManager: ObservableObject {
     //Make these available for the view to consume
     @Published var hitCards = [PlayingCard]()
     @Published var showScore = false
+    @Published var gameEnd = false
 
     //TODO: May need to make object that holds score data
-    @Published var score = 0
+    @Published var playerScore = 0
+    @Published var cpuScore = 0
+    
+    @Published var alertTitle = "Your score"
+    @Published var alertMessage = ""
+    //TODO: Idk clean this up
+    @Published var alertActionStage = 0
 
     init() {
         beginGame()
@@ -45,8 +52,17 @@ class GameManager: ObservableObject {
     
     func stayPressed() {
         calculatePlayerCards()
+    }
+    
+    func beginCPUTurn() {
+        print("here")
         
-        //beginCPUTurn()
+        //TODO: Hardcoded to test alert
+        alertActionStage = alertActionStage + 1
+        alertTitle = "Game over!"
+        alertMessage = "TODO: Show final score!"
+        
+        //TODO: Make cpu go then display alert (need to update current one)
     }
     
     func calculatePlayerCards() {
@@ -89,7 +105,7 @@ class GameManager: ObservableObject {
             }
         }
         
-        //[Ace, Eight] fails here and calculates as 8
+        //Test case: [Ace, Eight]
         
         //TODO: This logic is meh...
         //Calculate if no need for ace swap
@@ -102,48 +118,39 @@ class GameManager: ObservableObject {
             
             if (tempTotal != 21) {
                 //TODO: Define!
-                //TODO: Don't need swapped times
-                //((Stop swapping, swappedTimes), (Total, Number of aces))
-                var swapCheck = ((false, 0),(tempTotal, aces))
+                //(Stop swapping, (Total, Number of aces))
+                var swapCheck = (false,(tempTotal, aces))
                 
-                while (swapCheck.0.0 == false) {
-                    swapCheck = calculateForAceSwap(currentTotal: swapCheck.1.0, unswappedAcesCount: swapCheck.1.1, swappedTimes: swapCheck.0.1)
+                while (swapCheck.0 == false) {
+                    swapCheck = calculateForAceSwap(currentTotal: swapCheck.1.0, unswappedAcesCount: swapCheck.1.1)
                 }
                 
-                score = swapCheck.1.0
+                playerScore = swapCheck.1.0
             } else {
-                score = tempTotal
+                playerScore = tempTotal
             }
         } else {
-            score = total
+            playerScore = total
         }
     }
     
-    //TODO: DO we need swappedTimes
-    func calculateForAceSwap(currentTotal: Int, unswappedAcesCount: Int, swappedTimes: Int) -> ((Bool, Int), (Int, Int)) {
+    func calculateForAceSwap(currentTotal: Int, unswappedAcesCount: Int) -> (Bool, (Int, Int)) {
         if (unswappedAcesCount == 0) {
-            return ((true, swappedTimes), (currentTotal,unswappedAcesCount))
+            //Don't swap, nothing left to swap
+            return (true, (currentTotal,unswappedAcesCount))
         }
         
-        //Swap one of the aces for a 1
         var newTotal = currentTotal - 11
+        //Swap one of the aces for a 1
         newTotal += 1
         
         if (currentTotal < 21 && newTotal < currentTotal) {
             //Don't swap
-            return ((true, swappedTimes - 1), (currentTotal,unswappedAcesCount - 1))
+            return (true, (currentTotal,unswappedAcesCount - 1))
         }
         
-//        if (newTotal <= 21 && currentTotal <= 21 && newTotal < currentTotal) {
-//            return ((true, swappedTimes - 1), (currentTotal,unswappedAcesCount - 1))
-//        }
-        
-//       //TODO: NEED TO CALCULATE WHEN TO STOP SWAPPING ACES (is this correct?)
-//        if (newTotal <= 21) {
-//            return ((true, swappedTimes + 1), (newTotal,unswappedAcesCount - 1))
-//        } else
-        
-        return ((false, swappedTimes + 1), (newTotal,unswappedAcesCount - 1))
+        //Swap
+        return (false, (newTotal,unswappedAcesCount - 1))
     }
     
     func playerCards() -> [PlayingCard] {

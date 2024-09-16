@@ -68,7 +68,11 @@ struct ContentView: View {
                             gameManager.hitPressed()
                         }.padding(.bottom, 10)
                         Button("Stay") {
+                            //TODO: Better alert objects management
+                            //Progress to next stage
+                            gameManager.alertActionStage += 1
                             gameManager.stayPressed()
+                            gameManager.alertMessage = String(gameManager.playerScore)
                             showScore = true
                         }
                     }
@@ -77,11 +81,26 @@ struct ContentView: View {
         }
         .padding(.top, 10)
         .alert(isPresented: $showScore) {
-            Alert(
-                title: Text("Score"),
-                message: Text(String(gameManager.score))
+            Alert(title: Text(gameManager.alertTitle),
+                  message: Text(gameManager.alertMessage),
+                dismissButton: Alert.Button.default(
+                    Text("OK"), action: {
+                        if gameManager.alertActionStage == 1 {
+                            gameManager.beginCPUTurn()
+                            //TODO: Figure out how to display updated alert
+                        } else {
+                            //
+                        }
+                    }
+                )
             )
         }
+//        .alert(isPresented: $gameEnd) {
+//            Alert(
+//                title: Text("Total score"),
+//                message: Text(String("Your score: \(gameManager.playerScore)/nCPU score: \(gameManager.cpuScore)"))
+//            )
+//        }
     }
 }
 
