@@ -22,7 +22,10 @@ class GameManager: ObservableObject {
     }
     
     func resetGame() {
-        //TODO:
+        deck = CardDeck()
+        hitCards = []
+        showScore = false
+        beginGame()
     }
     
     func beginGame() {
@@ -99,6 +102,7 @@ class GameManager: ObservableObject {
             
             if (tempTotal != 21) {
                 //TODO: Define!
+                //TODO: Don't need swapped times
                 //((Stop swapping, swappedTimes), (Total, Number of aces))
                 var swapCheck = ((false, 0),(tempTotal, aces))
                 
@@ -115,8 +119,9 @@ class GameManager: ObservableObject {
         }
     }
     
+    //TODO: DO we need swappedTimes
     func calculateForAceSwap(currentTotal: Int, unswappedAcesCount: Int, swappedTimes: Int) -> ((Bool, Int), (Int, Int)) {
-        if (unswappedAcesCount == swappedTimes) || (unswappedAcesCount == 0) {
+        if (unswappedAcesCount == 0) {
             return ((true, swappedTimes), (currentTotal,unswappedAcesCount))
         }
         
