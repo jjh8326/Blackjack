@@ -9,14 +9,19 @@ import Foundation
 
 class GameManager: ObservableObject {
     private var deck = CardDeck()
-    private var alertManager = AlertManager()
+    
+    //TODO: Rename to scoreboard - its not an alert
+    var alertManager = AlertManager()
     
     //Make these available for the view to consume
     @Published var hitCards = [PlayingCard]()
+    @Published var gameOver: Bool = false
 
     //TODO: May need to make object that holds score data
     @Published var playerScore = 0
     @Published var cpuScore = 0
+    
+    public var cpuProgress = ""
 
     init() {
         beginGame()
@@ -26,9 +31,13 @@ class GameManager: ObservableObject {
         return alertManager.alertMessage(playerScore: playerScore, cpuScore: cpuScore)
     }
     
+    //TODO: Organize methods by manager they control
+    
     func resetGame() {
         deck = CardDeck()
         hitCards = []
+        alertManager = AlertManager()
+        gameOver = false
         beginGame()
     }
     
@@ -53,7 +62,49 @@ class GameManager: ObservableObject {
     }
     
     func beginCPUTurn() {
-        print("here")
+        //Game is over but CPU needs to take turn
+        alertManager.alertType = .gameOver
+        
+        //Update CPU progress
+        let random = Bool.random()
+        
+        if random {
+            cpuProgress = "CPU decides to hit"
+            //TODO: Weak self?
+            //while (needs to hit)
+            _ = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { timer in
+                //TODO: Hit pressed needs to take player card arg
+                self.hitPressed()
+                
+                //TODO: Refactor
+                _ = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { timer in
+                    self.gameOver = true
+                }
+            }
+        } else {
+            cpuProgress = "CPU decides to stay"
+            _ = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { timer in
+                //self.showFinalScore
+                
+                //TODO: Refactor
+                _ = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { timer in
+                    self.gameOver = true
+                }
+            }
+        }
+        
+        //TODO: OLD NOTES BELOW
+        
+            //TODO: show player score next to "player"
+            
+            //TODO: show new status bar in between black jacks and initial cards
+            
+            //TODO: display CPU hit / stay intentions
+            //hitPressed()
+            
+            //TODO: animate hits if needed
+            
+            //TODO: show final score board
     }
     
     func calculatePlayerCards() {

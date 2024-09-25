@@ -16,11 +16,20 @@ struct BlackjackView: View {
     
     @ObservedObject private var gameManager = GameManager()
     @State var presentAlert = false
+    @State var showCPUProgress = false
     
     var body: some View {
-        if (presentAlert) {
+        if (presentAlert || gameManager.gameOver) {
             AlertView(show: $presentAlert, gameManager: gameManager, buttonAction: {
-                presentAlert.toggle()
+                switch gameManager.alertManager.alertType {
+                case .playerTurnOver:
+                    gameManager.beginCPUTurn()
+                    showCPUProgress = true
+                    presentAlert.toggle()
+                case .gameOver:
+                    showCPUProgress = false
+                    gameManager.resetGame()
+                }
             })
         } else {
             VStack {
@@ -28,6 +37,12 @@ struct BlackjackView: View {
                 HStack {
                     Text("Blackjack")
                 }
+                
+                if (showCPUProgress) {
+                    Spacer()
+                    Text(gameManager.cpuProgress)
+                }
+                
                 Spacer()
                 //Dealt cards
                 HStack {
@@ -69,6 +84,7 @@ struct BlackjackView: View {
                         VStack {
                             Button("Reset") {
                                 gameManager.resetGame()
+                                showCPUProgress = false
                             }.padding(.bottom, 10)
                             Button("Hit") {
                                 //Update the hit cards

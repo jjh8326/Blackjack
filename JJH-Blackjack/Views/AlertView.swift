@@ -9,7 +9,6 @@ import SwiftUI
 
 public struct AlertView: View {
     @Binding var show: Bool
-    var playerScore = 0
     var gameManager: GameManager?
     var buttonAction: (() -> ())?
     
@@ -24,7 +23,6 @@ public struct AlertView: View {
             Spacer()
             Button("Ok") {
                 buttonAction?()
-                gameManager?.beginCPUTurn()
             }
             Spacer()
         }
