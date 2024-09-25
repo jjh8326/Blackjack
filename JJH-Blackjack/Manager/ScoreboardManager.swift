@@ -1,5 +1,5 @@
 //
-//  AlertManager.swift
+//  ScoreboardManager.swift
 //  JJH-Blackjack
 //
 //  Created by Joe H on 9/25/24.
@@ -7,18 +7,20 @@
 
 import Foundation
 
-class AlertManager: ObservableObject {
-    var alertType: AlertType = .playerTurnOver
+class ScoreboardManager: ObservableObject {
+    var turnType: TurnType = .playerTurnOver
     var alertAction: (() -> ())?
     
     func alertMessage(playerScore: Int?, cpuScore: Int?) -> String {
-        switch alertType {
+        switch turnType {
         case .playerTurnOver:
             if let score = playerScore {
                 return "You scored \(score)"
             }
         case .gameOver:
-            return "Game over"
+            if let score = playerScore, let score2 = cpuScore {
+                return "You scored \(score), the computer scored \(score2)\n\nYou win!"
+            }
         }
         
         return ""

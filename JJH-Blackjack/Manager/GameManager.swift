@@ -11,7 +11,9 @@ class GameManager: ObservableObject {
     private var deck = CardDeck()
     
     //TODO: Rename to scoreboard - its not an alert
-    var alertManager = AlertManager()
+    var scoreboardManager = ScoreboardManager()
+    
+    var timers = [Timer]()
     
     //Make these available for the view to consume
     @Published var hitCards = [PlayingCard]()
@@ -27,16 +29,23 @@ class GameManager: ObservableObject {
         beginGame()
     }
     
-    func alertMessage() -> String {
-        return alertManager.alertMessage(playerScore: playerScore, cpuScore: cpuScore)
+    func scoreboardMessage() -> String {
+        return scoreboardManager.alertMessage(playerScore: playerScore, cpuScore: cpuScore)
     }
     
     //TODO: Organize methods by manager they control
     
     func resetGame() {
+        //TODO: Stop all timers?
+        for timer in timers {
+            timer.invalidate()
+        }
+        
+        timers = []
+        
         deck = CardDeck()
         hitCards = []
-        alertManager = AlertManager()
+        scoreboardManager = ScoreboardManager()
         gameOver = false
         beginGame()
     }
@@ -63,34 +72,51 @@ class GameManager: ObservableObject {
     
     func beginCPUTurn() {
         //Game is over but CPU needs to take turn
-        alertManager.alertType = .gameOver
+        scoreboardManager.turnType = .gameOver
         
         //Update CPU progress
         let random = Bool.random()
+        
+        //TODO: NULLIFY ALL TIMERS IF RESET IT HIT - need to save them all
         
         if random {
             cpuProgress = "CPU decides to hit"
             //TODO: Weak self?
             //while (needs to hit)
-            _ = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { timer in
+            let timer1 = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { timer1 in
+                //self.timers.append(timer1)
+                
+                //TODO: Consider leaving cards / idk
+                self.hitCards = []
                 //TODO: Hit pressed needs to take player card arg
-                self.hitPressed()
                 
                 //TODO: Refactor
-                _ = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { timer in
-                    self.gameOver = true
+                let timer2 = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { timer2 in
+                    self.timers.append(timer2)
+                    self.hitPressed()
+                    //TODO: Must be a better way - game takes a while if no hit cards and then CPU hits...
+                    let timer3 = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { timer3 in
+                        self.timers.append(timer3)
+                        self.gameOver = true
+                    }
                 }
             }
+            self.timers.append(timer1)
         } else {
             cpuProgress = "CPU decides to stay"
-            _ = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { timer in
+            let timer4 = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { timer4 in
+                self.timers.append(timer4)
+                
                 //self.showFinalScore
                 
                 //TODO: Refactor
-                _ = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { timer in
+                let timer5 = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { timer5 in
+                    self.timers.append(timer5)
                     self.gameOver = true
                 }
             }
+            //TODO: Clean up timer logic
+            timers.append(timer4)
         }
         
         //TODO: OLD NOTES BELOW

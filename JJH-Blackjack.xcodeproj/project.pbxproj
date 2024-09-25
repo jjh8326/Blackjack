@@ -7,22 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D80DA1C92CA398CF000EE45D /* AlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80DA1C72CA398CF000EE45D /* AlertView.swift */; };
+		D80DA1C92CA398CF000EE45D /* ScoreboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80DA1C72CA398CF000EE45D /* ScoreboardView.swift */; };
 		D80DA1CA2CA398CF000EE45D /* BlackjackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80DA1C82CA398CF000EE45D /* BlackjackView.swift */; };
-		D80DA1CD2CA3D686000EE45D /* AlertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80DA1CC2CA3D686000EE45D /* AlertManager.swift */; };
+		D80DA1CD2CA3D686000EE45D /* ScoreboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80DA1CC2CA3D686000EE45D /* ScoreboardManager.swift */; };
 		D8700EA32C8E312500C0E769 /* JJH_BlackjackApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8700EA22C8E312500C0E769 /* JJH_BlackjackApp.swift */; };
 		D8700EA72C8E312800C0E769 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8700EA62C8E312800C0E769 /* Assets.xcassets */; };
 		D8700EAA2C8E312800C0E769 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8700EA92C8E312800C0E769 /* Preview Assets.xcassets */; };
 		D8700EB12C8E387C00C0E769 /* CardDeck.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8700EB02C8E387C00C0E769 /* CardDeck.swift */; };
 		D8700EB32C97A96F00C0E769 /* GameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8700EB22C97A96E00C0E769 /* GameManager.swift */; };
 		D8700EB52C97B2F000C0E769 /* DrawnCardMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8700EB42C97B2F000C0E769 /* DrawnCardMapping.swift */; };
-		D8B244B42CA0E14C00BE2C53 /* AlertType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B244B32CA0E14C00BE2C53 /* AlertType.swift */; };
+		D8B244B42CA0E14C00BE2C53 /* TurnType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B244B32CA0E14C00BE2C53 /* TurnType.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		D80DA1C72CA398CF000EE45D /* AlertView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertView.swift; sourceTree = "<group>"; };
+		D80DA1C72CA398CF000EE45D /* ScoreboardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScoreboardView.swift; sourceTree = "<group>"; };
 		D80DA1C82CA398CF000EE45D /* BlackjackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlackjackView.swift; sourceTree = "<group>"; };
-		D80DA1CC2CA3D686000EE45D /* AlertManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertManager.swift; sourceTree = "<group>"; };
+		D80DA1CC2CA3D686000EE45D /* ScoreboardManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreboardManager.swift; sourceTree = "<group>"; };
 		D8700E9F2C8E312500C0E769 /* JJH-Blackjack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "JJH-Blackjack.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8700EA22C8E312500C0E769 /* JJH_BlackjackApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JJH_BlackjackApp.swift; sourceTree = "<group>"; };
 		D8700EA62C8E312800C0E769 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -30,7 +30,7 @@
 		D8700EB02C8E387C00C0E769 /* CardDeck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDeck.swift; sourceTree = "<group>"; };
 		D8700EB22C97A96E00C0E769 /* GameManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameManager.swift; sourceTree = "<group>"; };
 		D8700EB42C97B2F000C0E769 /* DrawnCardMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawnCardMapping.swift; sourceTree = "<group>"; };
-		D8B244B32CA0E14C00BE2C53 /* AlertType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertType.swift; sourceTree = "<group>"; };
+		D8B244B32CA0E14C00BE2C53 /* TurnType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnType.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -48,7 +48,7 @@
 			isa = PBXGroup;
 			children = (
 				D8700EB22C97A96E00C0E769 /* GameManager.swift */,
-				D80DA1CC2CA3D686000EE45D /* AlertManager.swift */,
+				D80DA1CC2CA3D686000EE45D /* ScoreboardManager.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -95,7 +95,7 @@
 			children = (
 				D8700EB02C8E387C00C0E769 /* CardDeck.swift */,
 				D8700EB42C97B2F000C0E769 /* DrawnCardMapping.swift */,
-				D8B244B32CA0E14C00BE2C53 /* AlertType.swift */,
+				D8B244B32CA0E14C00BE2C53 /* TurnType.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -103,7 +103,7 @@
 		D8F5C9132CA0F881000AD262 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				D80DA1C72CA398CF000EE45D /* AlertView.swift */,
+				D80DA1C72CA398CF000EE45D /* ScoreboardView.swift */,
 				D80DA1C82CA398CF000EE45D /* BlackjackView.swift */,
 			);
 			path = Views;
@@ -179,13 +179,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D80DA1CD2CA3D686000EE45D /* AlertManager.swift in Sources */,
+				D80DA1CD2CA3D686000EE45D /* ScoreboardManager.swift in Sources */,
 				D8700EB52C97B2F000C0E769 /* DrawnCardMapping.swift in Sources */,
 				D80DA1CA2CA398CF000EE45D /* BlackjackView.swift in Sources */,
 				D8700EB12C8E387C00C0E769 /* CardDeck.swift in Sources */,
-				D8B244B42CA0E14C00BE2C53 /* AlertType.swift in Sources */,
+				D8B244B42CA0E14C00BE2C53 /* TurnType.swift in Sources */,
 				D8700EB32C97A96F00C0E769 /* GameManager.swift in Sources */,
-				D80DA1C92CA398CF000EE45D /* AlertView.swift in Sources */,
+				D80DA1C92CA398CF000EE45D /* ScoreboardView.swift in Sources */,
 				D8700EA32C8E312500C0E769 /* JJH_BlackjackApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

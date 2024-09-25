@@ -1,5 +1,5 @@
 //
-//  AlertView.swift
+//  ScoreboardView.swift
 //  JJH-Blackjack
 //
 //  Created by Joe H on 9/22/24.
@@ -7,25 +7,31 @@
 
 import SwiftUI
 
-public struct AlertView: View {
+public struct ScoreboardView: View {
     @Binding var show: Bool
     var gameManager: GameManager?
     var buttonAction: (() -> ())?
     
     public var body: some View {
         VStack {
+            //Title
+            HStack {
+                Text("Blackjack")
+            }
+            Spacer()
+            
             //TODO: Design?
             //Color.black.opacity(0.75)
                 //.edgesIgnoringSafeArea(.all)
             
             Spacer()
-            Text(gameManager?.alertMessage() ?? "")
+            Text(gameManager?.scoreboardMessage() ?? "")
             Spacer()
             Button("Ok") {
                 buttonAction?()
             }
             Spacer()
-        }
+        }.padding(.top, 10)
     }
 }
 

@@ -20,8 +20,8 @@ struct BlackjackView: View {
     
     var body: some View {
         if (presentAlert || gameManager.gameOver) {
-            AlertView(show: $presentAlert, gameManager: gameManager, buttonAction: {
-                switch gameManager.alertManager.alertType {
+            ScoreboardView(show: $presentAlert, gameManager: gameManager, buttonAction: {
+                switch gameManager.scoreboardManager.turnType {
                 case .playerTurnOver:
                     gameManager.beginCPUTurn()
                     showCPUProgress = true
