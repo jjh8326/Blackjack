@@ -7,18 +7,15 @@
 
 import SwiftUI
 
-struct AlertView: View {
+public struct AlertView: View {
     @Binding var show: Bool
     var playerScore = 0
     var gameManager: GameManager?
+    var buttonAction: (() -> ())?
     
-    //TODO: Common code or better spot
-    typealias ActionBlock = (() -> ())
-    var buttonAction: ActionBlock?
-    
-    var body: some View {
-        //TODO:
+    public var body: some View {
         VStack {
+            //TODO: Design?
             //Color.black.opacity(0.75)
                 //.edgesIgnoringSafeArea(.all)
             
@@ -34,9 +31,10 @@ struct AlertView: View {
     }
 }
 
-//TODO: How to pass binding bool??
+//TODO: How to pass binding bool - need wrapper view
 //struct AlertView_Previews: PreviewProvider {
+//    @State var showAlert: Bool = false
 //    static var previews: some View {
-//        AlertView()
+//        AlertView(show: $showAlert)
 //    }
 //}

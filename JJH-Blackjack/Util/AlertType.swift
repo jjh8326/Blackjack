@@ -10,14 +10,4 @@ import Foundation
 enum AlertType {
     case playerTurnOver
     case gameOver
-    
-    //TODO: Used?
-//    func title() -> String {
-//        switch self {
-//        case .playerTurnOver:
-//            return "Player score"
-//        case .gameOver:
-//            return "Game over!"
-//        }
-//    }
 }

@@ -54,15 +54,6 @@ class GameManager: ObservableObject {
     
     func beginCPUTurn() {
         print("here")
-        
-        //TODO: Hardcoded to test alert
-        //alertActionStage = alertActionStage + 1
-
-        
-        //TODO: HOW DO I CALL THIS
-        //BlackjackView(showScore: true)
-        
-        //TODO: Make cpu go then display alert (need to update current one)
     }
     
     func calculatePlayerCards() {
