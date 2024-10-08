@@ -27,6 +27,10 @@ public struct ScoreboardView: View {
             Spacer()
             Text(gameManager?.scoreboardMessage() ?? "")
             Spacer()
+            //TODO: Make text say reset at game end...
+            //TODO: Make cpu card flip upside down
+            //TODO: CHECK OTHER TODOS
+            //TODO: CPU LOGIC - cleanup first
             Button("Ok") {
                 buttonAction?()
             }

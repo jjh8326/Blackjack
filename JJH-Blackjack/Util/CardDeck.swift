@@ -130,10 +130,8 @@ class CardDeck {
         if self.cardsRemaining >= 1 {
             self.cardsRemaining -= 1
             
-            print("You drew:")
-            print(cardDrawn.cardName())
-            print("Cards remaining:")
-            print(cardsRemaining)
+            print("Card drawn: ", cardDrawn.cardName())
+            print("Cards remaining: ", cardsRemaining)
             
             //Add card to mapping
             drawnCardsMapping.append(DrawnCardMapping(isPlayerCard: isPlayerCard, card: cardDrawn))

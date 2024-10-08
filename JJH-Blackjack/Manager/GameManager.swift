@@ -9,14 +9,14 @@ import Foundation
 
 class GameManager: ObservableObject {
     private var deck = CardDeck()
-    
-    //TODO: Rename to scoreboard - its not an alert
     var scoreboardManager = ScoreboardManager()
     
     var timers = [Timer]()
     
     //Make these available for the view to consume
-    @Published var hitCards = [PlayingCard]()
+    @Published var playerHitCards = [PlayingCard]()
+    @Published var cpuHitCards = [PlayingCard]()
+    
     @Published var gameOver: Bool = false
 
     //TODO: May need to make object that holds score data
@@ -29,11 +29,16 @@ class GameManager: ObservableObject {
         beginGame()
     }
     
-    func scoreboardMessage() -> String {
-        return scoreboardManager.alertMessage(playerScore: playerScore, cpuScore: cpuScore)
+    //TODO: Need to one card flipped for CPU
+    func beginGame() {
+        //Draw player and CPU cards
+        deck.drawCard(isPlayerCard: true)
+        deck.drawCard(isPlayerCard: true)
+        deck.drawCard(isPlayerCard: false)
+        deck.drawCard(isPlayerCard: false)
     }
     
-    //TODO: Organize methods by manager they control
+    //MARK: Button actions
     
     func resetGame() {
         //TODO: Stop all timers?
@@ -44,64 +49,68 @@ class GameManager: ObservableObject {
         timers = []
         
         deck = CardDeck()
-        hitCards = []
+        playerHitCards = []
+        cpuHitCards = []
         scoreboardManager = ScoreboardManager()
         gameOver = false
         beginGame()
     }
     
-    //TODO: Need to one card flipped for CPU
-    func beginGame() {
-        //Draw player and CPU cards
-        deck.drawCard(isPlayerCard: true)
-        deck.drawCard(isPlayerCard: true)
-        deck.drawCard(isPlayerCard: false)
-        deck.drawCard(isPlayerCard: false)
-    }
-    
-    func hitPressed() {
-        drawCard(isPlayerCard: true)
-        let drawnCardsMapping = deck.drawnCardsMapping
-        let lastCardDrawnMapping = drawnCardsMapping[drawnCardsMapping.count - 1]
-        hitCards.append(lastCardDrawnMapping.card)
+    //TODO: Player type enum
+    func hitPressed(playerTurn: Bool) {
+        if playerTurn {
+            drawCard(isPlayerCard: true)
+            let drawnCardsMapping = deck.drawnCardsMapping
+            let lastCardDrawnMapping = drawnCardsMapping[drawnCardsMapping.count - 1]
+            playerHitCards.append(lastCardDrawnMapping.card)
+        } else {
+            //TODO: Fix this, draw card should draw a card
+            drawCard(isPlayerCard: false)
+            let drawnCardsMapping = deck.drawnCardsMapping
+            let lastCardDrawnMapping = drawnCardsMapping[drawnCardsMapping.count - 1]
+            cpuHitCards.append(lastCardDrawnMapping.card)
+        }
     }
     
     func stayPressed() {
-        calculatePlayerCards()
+        playerScore = calculate(cards: playerCards())
     }
     
+    //MARK: Game flow methods
+    
+    //TODO: Clean this up
     func beginCPUTurn() {
         //Game is over but CPU needs to take turn
         scoreboardManager.turnType = .gameOver
         
         //Update CPU progress
-        let random = Bool.random()
+        //let random = Bool.random()
         
         //TODO: NULLIFY ALL TIMERS IF RESET IT HIT - need to save them all
+        //TODO: WIP REFACTOR
         
-        if random {
+        //TODO: Weak self?
+        if shouldCPUHit() {
             cpuProgress = "CPU decides to hit"
-            //TODO: Weak self?
-            //while (needs to hit)
-            let timer1 = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { timer1 in
-                //self.timers.append(timer1)
-                
-                //TODO: Consider leaving cards / idk
-                self.hitCards = []
-                //TODO: Hit pressed needs to take player card arg
-                
-                //TODO: Refactor
-                let timer2 = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { timer2 in
-                    self.timers.append(timer2)
-                    self.hitPressed()
-                    //TODO: Must be a better way - game takes a while if no hit cards and then CPU hits...
-                    let timer3 = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { timer3 in
-                        self.timers.append(timer3)
-                        self.gameOver = true
-                    }
-                }
+
+            //Visually clear the player hit cards to make way for CPU hit(s)
+            self.playerHitCards = []
+            
+            let timer = createTimerForCPUHit()
+            //self.timers.append(timer)
+            
+            //TODO: Happens too fast - make timers work again
+            
+            //Check for subsequent hits
+            while shouldCPUHit() {
+                self.hitPressed(playerTurn: false)
+//
+//                let timer = createTimerForCPUHit()
+//                self.timers.append(timer)
             }
-            self.timers.append(timer1)
+            
+            self.gameOver = true
+            
         } else {
             cpuProgress = "CPU decides to stay"
             let timer4 = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { timer4 in
@@ -121,26 +130,67 @@ class GameManager: ObservableObject {
         
         //TODO: OLD NOTES BELOW
         
-            //TODO: show player score next to "player"
+        //TODO: show player score next to "player"
             
-            //TODO: show new status bar in between black jacks and initial cards
+        //TODO: show new status bar in between black jacks and initial cards
             
-            //TODO: display CPU hit / stay intentions
-            //hitPressed()
+        //TODO: display CPU hit / stay intentions
+        //hitPressed()
             
-            //TODO: animate hits if needed
+        //TODO: animate hits if needed
             
-            //TODO: show final score board
+        //TODO: show final score board
     }
     
-    func calculatePlayerCards() {
+    func createTimerForCPUHit() -> Timer {
+        let timer1 = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { timer1 in
+            //self.timers.append(timer1)
+            
+            //TODO: Refactor
+            let timer2 = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { timer2 in
+                self.timers.append(timer2)
+                //self.hitPressed(playerTurn: false)
+                //TODO: Must be a better way - game takes a while if no hit cards and then CPU hits...
+                let timer3 = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { timer3 in
+                    self.timers.append(timer3)
+                    
+//                    if self.shouldCPUHit() {
+//                        //TODO: Look
+//                    } else {
+//                        self.gameOver = true
+//                    }
+                }
+            }
+        }
+        
+        return timer1
+    }
+    
+    //TODO: Everything in this method will be printed twice because this method is used to check for hit and for the while loop
+    func shouldCPUHit() -> Bool {
+        
+        //TODO: Consider hitting on soft 17 or lower
+        
+        cpuScore = calculate(cards: cpuCards())
+        print("CPU Score = %@", cpuScore)
+        
+        //Dealer hits 16 or below
+        if (cpuScore <= 16) {
+            print("CPU will be hitting!")
+            return true
+        }
+        
+        return false
+    }
+    
+    func calculate(cards: [PlayingCard]) -> Int {
         //TODO: Determine if player bust
         //if calculateCardValue() < 21 { bust }
 
         var total = 0
         var aces = 0
         
-        for card in playerCards() {
+        for card in cards {
             switch card.cardValue {
             case .two:
                 total += 2
@@ -193,12 +243,12 @@ class GameManager: ObservableObject {
                     swapCheck = calculateForAceSwap(currentTotal: swapCheck.1.0, unswappedAcesCount: swapCheck.1.1)
                 }
                 
-                playerScore = swapCheck.1.0
+                return swapCheck.1.0
             } else {
-                playerScore = tempTotal
+                return tempTotal
             }
         } else {
-            playerScore = total
+            return total
         }
     }
     
@@ -221,12 +271,22 @@ class GameManager: ObservableObject {
         return (false, (newTotal,unswappedAcesCount - 1))
     }
     
+    //MARK: Deck methods
+    
     func playerCards() -> [PlayingCard] {
         var playerCards = playerStartingCards()
-        for card in hitCards {
+        for card in playerHitCards {
             playerCards.append(card)
         }
         return playerCards
+    }
+    
+    func cpuCards() -> [PlayingCard] {
+        var cpuCards = cpuStartingCards()
+        for card in cpuHitCards {
+            cpuCards.append(card)
+        }
+        return cpuCards
     }
     
     //Return first four cards drawn
@@ -240,5 +300,11 @@ class GameManager: ObservableObject {
     
     func drawCard(isPlayerCard: Bool) {
         deck.drawCard(isPlayerCard: isPlayerCard)
+    }
+    
+    //MARK: Scoreboard methods
+    
+    func scoreboardMessage() -> String {
+        return scoreboardManager.alertMessage(playerScore: playerScore, cpuScore: cpuScore)
     }
 }

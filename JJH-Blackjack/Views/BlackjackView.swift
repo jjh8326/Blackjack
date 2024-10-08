@@ -75,7 +75,14 @@ struct BlackjackView: View {
                 HStack {
                     HStack {
                         //Drawn cards (1 up to 9)
-                        ForEach(gameManager.hitCards, id: \.self) { card in
+                        ForEach(gameManager.playerHitCards, id: \.self) { card in
+                            Text(card.cardName())
+                        }
+                        
+                        //TODO: Use one collection?
+                        
+                        //CPU Drawn cards (1 up to 9)
+                        ForEach(gameManager.cpuHitCards, id: \.self) { card in
                             Text(card.cardName())
                         }
                     }
@@ -88,7 +95,7 @@ struct BlackjackView: View {
                             }.padding(.bottom, 10)
                             Button("Hit") {
                                 //Update the hit cards
-                                gameManager.hitPressed()
+                                gameManager.hitPressed(playerTurn: true)
                             }.padding(.bottom, 10)
                             Button("Stay") {
                                 //TODO: Rename to calculate cards?
